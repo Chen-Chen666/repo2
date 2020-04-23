@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <script src="js/jquery-1.9.1.js"></script>
+    <script>
+        $(function(){
+            /**保存数据*/
+            $("#btsave").click(function(){
+                var uname=$("#uname").val();
+                var passwd=$("#passwd").val();
+                var jsondata={'uname':uname,'passwd':passwd};
+
+                $.post('http://192.168.1.87:9001/save_Users.do',jsondata,function(flag){
+                    if(flag){
+                        alert('保存到redis成功!');
+                    }else{
+                        alert("保存到redis失败！");
+                    }
+                });
+
+            });
+
+            /**
+             * 获取
+             * **/
+            $('#btfindusers').click(function () {
+                $.getJSON('http://192.168.1.87:9001/findUsers.do?uname=admin&passwd=123456',function (user) {
+                    if (user!=null){
+                        alert(user.uname+",密码:"+user.passwd);
+
+                    }else{
+                        alert('无此用户！');
+                    }
+                })
+            });
+
+        });
+
+    </script>
+</head>
+<body>
+
+<form action="" method="post">
+    <div align="center">
+        <div align="left"
+             style="background-color: aquamarine;border: aqua 1px;border-radius: 10px;width: 450px;padding: 20px">
+            <div style="padding: 20px">
+                账号：<input type="text" name="uname" id="uname">
+
+            </div>
+            <div style="padding: 20px">
+                密码：<input type="password" name="passwd" id="passwd">
+
+            </div>
+
+            <div style="padding: 20px">
+                <input type="button" id="btsave" value="确定">
+                <input type="reset" value="取消">
+            </div>
+        </div>
+    </div>
+</form>
+<div align="center">
+       <div><input type="button" id="btfindusers" value="获取用户对象"></div>
+</div>
+</body>
+</html>
